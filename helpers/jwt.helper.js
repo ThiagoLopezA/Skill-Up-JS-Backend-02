@@ -1,4 +1,5 @@
 const JWT = require("jsonwebtoken");
+const ErrorObject = require("./error");
 require("dotenv").config();
 
 module.exports = {
@@ -7,6 +8,10 @@ module.exports = {
       expiresIn: expiration,
     });
   },
-  decode: () => {},
+  decode: token => {
+    const decoded = JWT.decode(token);
+    if (!decoded) throw new ErrorObject("Invalid token", 400);
+    return decoded;
+  },
   verify: () => {},
 };
