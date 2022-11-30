@@ -13,5 +13,10 @@ module.exports = {
     if (!decoded) throw new ErrorObject("Invalid token", 400);
     return decoded;
   },
-  verify: () => {},
+  verify: token => {
+    JWT.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+      if (decoded) return true;
+      return false;
+    });
+  },
 };
