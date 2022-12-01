@@ -14,7 +14,7 @@ module.exports = {
     return decoded;
   },
   verify: token => {
-    JWT.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+    return JWT.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
       if (decoded) return true;
       return false;
     });
