@@ -20,8 +20,8 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      userId: Sequelize.INTEGER,
-      categoryId: Sequelize.INTEGER,
+      userId: {type: Sequelize.INTEGER, references: { model:'users', key: 'id'}},
+      categoryId:  {type:Sequelize.INTEGER, references: {model: 'categories', key: 'id'}},
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
