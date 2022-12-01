@@ -8,21 +8,26 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id: {
-        type: Sequelize.INTEGER
-      },
       description: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       amount: {
+        allowNull: false,
         type: Sequelize.DECIMAL
       },
       date: {
+        allowNull: false,
         type: Sequelize.DATE
       },
+      userId: Sequelize.INTEGER,
+      categoryId: Sequelize.INTEGER,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      deletedAt: {
+        type: Sequelize.STRING
       },
       updatedAt: {
         allowNull: false,
