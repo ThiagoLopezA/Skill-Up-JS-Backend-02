@@ -23,3 +23,17 @@ module.exports.deleteOne = async (id) => {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
 };
+
+module.exports.createUser = async (user) => {
+  try {
+    const email = user.email
+    const find = await User.findOne({ where: { email } });
+    if (find) {
+      throw new ErrorObject('email is already exists', 400);
+    }
+    return await User.create(user);
+
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
