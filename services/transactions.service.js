@@ -3,7 +3,7 @@ const { Transaction } = require("../database/models");
 
 exports.createOne = async (props) => {
   try {
-    if (!props.userId || !props.amount || !props.date || !props.date) {
+    if (!props.userId || !props.amount || !props.date || !props.categoryId) {
       throw new ErrorObject("Incomplete data", 404);
     }
     const newTransaction = await Transaction.create({
