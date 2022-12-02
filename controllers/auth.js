@@ -9,12 +9,12 @@ module.exports = {
     try {
       const { email, password } = req.body;
       const user = await getByEmail(email);
-      const match = bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(password, user.password);
       if (!match) endpointResponse({ res, body: { ok: false } });
       endpointResponse({
         res,
         message: "Authenticated successfully",
-        body: { ...user },
+        body: { ...user.dataValues },
       });
     } catch (error) {
       const httpError = createHttpError(
