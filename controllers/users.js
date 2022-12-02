@@ -2,7 +2,7 @@ const createHttpError = require("http-errors");
 const { User } = require("../database/models");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { getUser } = require("../services/users.service");
+const { getUser, deleteOne } = require("../services/users.service");
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -22,7 +22,23 @@ module.exports = {
       next(httpError);
     }
   }),
-  
+  deleteOne: catchAsync(async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const response = await deleteOne(id);
+      endpointResponse({
+        res,
+        message: "User deleted successfully",
+        body: response,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error deleting user] - [/:id - DELETE]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getUser(req.params.id);
