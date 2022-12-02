@@ -31,7 +31,8 @@ module.exports.createUser = async (user) => {
     if (find) {
       throw new ErrorObject('email is already exists', 400);
     }
-    return await User.create(user);
+    await User.create(user);
+    return await User.findOne({ where: { email } });
 
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
