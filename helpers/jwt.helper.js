@@ -1,5 +1,5 @@
 const JWT = require("jsonwebtoken");
-const ErrorObject = require("./error");
+const { ErrorObject } = require("./error");
 require("dotenv").config();
 
 module.exports = {
