@@ -1,8 +1,10 @@
 const express = require("express");
-const { getOne } = require("../controllers/categories");
+const { getOne, deleteOne } = require("../controllers/categories");
 
 const router = express.Router();
 
 router.get("/:id", getOne);
+
+router.delete("/:id", deleteOne);
 
 module.exports = router;
