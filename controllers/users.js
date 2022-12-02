@@ -61,7 +61,6 @@ module.exports = {
     try {
       const user = req.body;
       user.password = await bcrypt.hash(req.body.password)
-      console.log(user)
       const response = await createUser(user);
       endpointResponse({
         res,
@@ -71,7 +70,7 @@ module.exports = {
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-        `[Error creting user] - [POST]: ${error.message}`
+        `[Error creating user] - [POST]: ${error.message}`
       );
       next(httpError);
     }
