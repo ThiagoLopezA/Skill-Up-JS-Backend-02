@@ -1,7 +1,7 @@
 const createHttpError = require("http-errors");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { createOne } = require("../services/transactions.service");
+const { createOne, getAllUserTransactions } = require("../services/transactions.service");
 
 module.exports = {
     createOne: catchAsync(async (req, res, next) => {
@@ -20,4 +20,20 @@ module.exports = {
       next(httpError);
     }
   }),
+  getAllUserTransactions: catchAsync(async (req, res, next) => {
+    try {
+      const response = await getAllUserTransactions(req.body);
+      endpointResponse({
+        res,
+        message: "All avalable transactions obtained successfully",
+        body: response,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error to get transaction] - [GET]: ${error.message}`
+      );
+      next(httpError);
+    }
+
 };
