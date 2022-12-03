@@ -1,6 +1,5 @@
 const { ErrorObject } = require("../helpers/error");
 const { Transaction, User } = require("../database/models");
-const { json } = require("sequelize");
 
 exports.createOne = async (props) => {
   try {
