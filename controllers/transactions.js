@@ -28,6 +28,7 @@ module.exports = {
         message: "All avalable transactions obtained successfully",
         body: response,
       });
+      
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
