@@ -1,5 +1,7 @@
 const { ErrorObject } = require("../helpers/error");
-const { Transaction } = require("../database/models");
+const { Transaction, User } = require("../database/models");
+const { json } = require("sequelize");
+
 
 exports.createOne = async (props) => {
   try {
@@ -13,6 +15,22 @@ exports.createOne = async (props) => {
       categoyId: props.categoryId,
     });
     return newTransaction;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
+
+exports.getAllUserTransactions = async (props) => {
+  try {
+   
+    const allTransactions = await Transaction.findAll(
+      { where: { userId: props.userId } },
+      { include: User }
+    );
+    if(!allTransactions){
+      return json("No transactions available")
+    }
+    return allTransactions
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
