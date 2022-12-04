@@ -24,14 +24,14 @@ module.exports.deleteOne = async (id) => {
   }
 };
 
-module.exports.editUser = async (props) => {
+module.exports.editUser = async (id, props) => {
   try {
-    const userToEdit = await User.findByPk(props.id);
+    const userToEdit = await User.findByPk(id);
     if (userToEdit !== null) {
       throw new ErrorObject("User not found", 404);
     }
     const result = await User.put({
-      where: { id: props.id },
+      where: { id: id },
       data: {
         firstname: props.firstname,
         lastname: props.lastname,
