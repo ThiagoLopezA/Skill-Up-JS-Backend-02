@@ -18,7 +18,27 @@ module.exports.deleteOne = async (id) => {
       const destroy = await User.destroy({ where: { id } });
       return find;
     }
-    throw new ErrorObject('user not found', 404);
+    throw new ErrorObject("user not found", 404);
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
+
+module.exports.editUser = async (props) => {
+  try {
+    const userToEdit = await User.findByPk(props.id);
+    if (userToEdit !== null) {
+      throw new ErrorObject("User not found", 404);
+    }
+    const result = await User.put({
+      where: { id: props.id },
+      data: {
+        firstname: props.firstname,
+        lastname: props.lastname,
+        email: props.email
+      },
+    });
+    return result;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
