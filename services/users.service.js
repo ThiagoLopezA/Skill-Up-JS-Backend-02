@@ -26,11 +26,13 @@ module.exports.deleteOne = async (id) => {
 
 module.exports.createUser = async (user) => {
   try {
-    const email = user.email
+    const email = user.email;
     const find = await User.findOne({ where: { email } });
     if (find) {
       throw new ErrorObject('email is already exists', 400);
     }
+    user.firstName = user.first_name;
+    user.lastName = user.last_name;
     await User.create(user);
     return await User.findOne({ where: { email } });
 
