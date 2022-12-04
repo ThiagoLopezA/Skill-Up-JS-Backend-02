@@ -25,7 +25,7 @@ module.exports = {
       const response = await getAllUserTransactions(req.body);
       endpointResponse({
         res,
-        message: "All avalable transactions obtained successfully",
+        message: "All available transactions obtained successfully",
         body: response,
       });
       
