@@ -27,17 +27,18 @@ module.exports.deleteOne = async (id) => {
 module.exports.editUser = async (id, props) => {
   try {
     const userToEdit = await User.findByPk(id);
-    if (userToEdit !== null) {
+    if (userToEdit == null) {
       throw new ErrorObject("User not found", 404);
     }
-    const result = await User.put({
-      where: { id: id },
-      data: {
-        firstname: props.firstname,
-        lastname: props.lastname,
-        email: props.email
-      },
-    });
+    const values = {
+      firstName: props.firstname,
+        lastName: props.lastname,
+        email: props.email,
+        avatar: props.avatar,
+        password: props.password,
+        roleId: props.roleId
+    }
+    const result = await User.update(values, {where: id});
     return result;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
