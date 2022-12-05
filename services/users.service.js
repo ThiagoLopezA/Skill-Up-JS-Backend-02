@@ -26,8 +26,8 @@ module.exports.deleteOne = async (id) => {
 
 module.exports.editUser = async (id, props) => {
   try {
-    const userToEdit = await User.findByPk(id);
-    if (userToEdit == null) {
+    const user = await User.findByPk(id);
+    if (!user) {
       throw new ErrorObject("User not found", 404);
     }
     
