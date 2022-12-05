@@ -1,5 +1,5 @@
 const { ErrorObject } = require("../helpers/error");
-const { Transaction } = require("../database/models");
+const { Transaction, User } = require("../database/models");
 
 exports.deleteOne = async (id) => {
   try {
