@@ -32,7 +32,7 @@ module.exports.editUser = async (id, props) => {
     }
     
     const result = await User.update(props, {where: {id}});
-    return result;
+    return user;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
