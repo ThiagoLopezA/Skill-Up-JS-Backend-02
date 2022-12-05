@@ -32,3 +32,12 @@ exports.getAll = async () => {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
 };
+
+module.exports.createOne = async (category) => {
+  try {
+    return await Category.create(category);
+
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
