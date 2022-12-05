@@ -2,7 +2,10 @@ const createHttpError = require("http-errors");
 const { User } = require("../database/models");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { getUser, deleteOne } = require("../services/users.service");
+const { getUser, deleteOne, editUser, createUser } = require("../services/users.service");
+const bcrypt = require("../helpers/bcrypt.helper");
+
+
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -55,4 +58,42 @@ module.exports = {
       next(httpError);
     }
   }),
+
+  editUser: catchAsync(async (req, res, next) => {
+    try {
+      const id = req.params.id
+      const userData = req.body
+      const response = await editUser(id, userData);
+      endpointResponse({
+        res,
+        message: "User update successfully", body: response,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+          `[Error updating user] - [/:id - PUT]: ${error.message}`
+                );
+      next(httpError);
+    }
+  }),
+
+  create: catchAsync(async (req, res, next) => {
+    try {
+      const user = req.body;
+      user.password = await bcrypt.hash(req.body.password)
+      const response = await createUser(user);
+      endpointResponse({
+        res,
+        message: "User created successfully",
+         });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+          `[Error creating user] - [POST]: ${error.message}`
+           );
+      next(httpError);
+    }
+  })
+
+
 };
