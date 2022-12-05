@@ -10,7 +10,7 @@ exports.createOne = async (props) => {
       amount: props.amount,
       date: props.date,
       userId: props.userId,
-      categoyId: props.categoryId,
+      categoryId: props.categoryId,
     });
     return newTransaction;
   } catch (error) {
