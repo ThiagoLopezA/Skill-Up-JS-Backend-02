@@ -1,7 +1,9 @@
 const express = require("express");
-const { deleteOne } = require("../controllers/transactions");
+const { getOne, deleteOne } = require("../controllers/transactions");
 
 const router = express.Router();
+
+router.get("/:id", getOne);
 
 router.delete("/:id", deleteOne)
 

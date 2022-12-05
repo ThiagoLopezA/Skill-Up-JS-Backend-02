@@ -13,3 +13,13 @@ exports.deleteOne = async (id) => {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
 };
+
+exports.getOne = async (id) => {
+  try {
+    const transaction = await Transaction.findByPk(id);
+    if (!transaction) throw new ErrorObject("Transaction not found", 404);
+    return transaction;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
