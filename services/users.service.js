@@ -30,15 +30,8 @@ module.exports.editUser = async (id, props) => {
     if (userToEdit == null) {
       throw new ErrorObject("User not found", 404);
     }
-    const values = {
-      firstName: props.firstname,
-        lastName: props.lastname,
-        email: props.email,
-        avatar: props.avatar,
-        password: props.password,
-        roleId: props.roleId
-    }
-    const result = await User.update(values, {where: {id}});
+    
+    const result = await User.update(props, {where: {id}});
     return result;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
