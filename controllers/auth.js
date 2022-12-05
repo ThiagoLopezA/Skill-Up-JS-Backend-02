@@ -3,6 +3,7 @@ const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
 const { getByEmail } = require("../services/user.service");
 const bcrypt = require("../helpers/bcrypt.helper");
+const jwt = require("../helpers/jwt.helper");
 
 module.exports = {
   login: catchAsync(async (req, res, next) => {
@@ -11,10 +12,11 @@ module.exports = {
       const user = await getByEmail(email);
       const match = await bcrypt.compare(password, user.password);
       if (!match) endpointResponse({ res, body: { ok: false } });
+      const response = jwt.encode(user.dataValues, "30m");
       endpointResponse({
         res,
         message: "Authenticated successfully",
-        body: { ...user.dataValues },
+        body: response,
       });
     } catch (error) {
       const httpError = createHttpError(
