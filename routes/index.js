@@ -4,8 +4,6 @@ const categoriesRouter = require("./categories");
 const transactionsRouter = require("./transactions");
 
 const authRouter = require("./auth");
-const transactionsRouter = require("./transactions")
-
 
 const router = express.Router();
 
@@ -15,7 +13,5 @@ router.use("/categories", categoriesRouter);
 router.use("/transactions", transactionsRouter);
 
 router.use("/auth", authRouter);
-
-
 
 module.exports = router;
