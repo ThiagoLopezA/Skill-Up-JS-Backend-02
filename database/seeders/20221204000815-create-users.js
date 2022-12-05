@@ -103,6 +103,26 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        firstName: "Marcelo",
+        lastName: "Sousa",
+        email: "marcelo@mail.com",
+        avatar: "1.img",
+        password:"Hola1234",
+        roleId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        firstName: "Marina",
+        lastName: "Doitte",
+        email: "marina@mail.com",
+        avatar: "1.img",
+        password:"Hola1234",
+        roleId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     return await queryInterface.bulkInsert("Users", users, {});
   },
