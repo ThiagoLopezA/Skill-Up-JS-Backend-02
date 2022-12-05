@@ -15,7 +15,7 @@ module.exports = {
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-        `[Error retrieving category] - [/:id - GET]: ${error.message}`
+        `[Error retrieving transaction] - [/:id - GET]: ${error.message}`
       );
       next(httpError);
     }
