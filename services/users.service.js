@@ -38,7 +38,7 @@ module.exports.editUser = async (id, props) => {
         password: props.password,
         roleId: props.roleId
     }
-    const result = await User.update(values, {where: id});
+    const result = await User.update(values, {where: {id}});
     return result;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
