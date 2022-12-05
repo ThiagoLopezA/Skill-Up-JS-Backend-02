@@ -1,5 +1,5 @@
 const express = require("express");
-const { getOne, getAll, deleteOne, editOne } = require("../controllers/categories");
+const { getOne, getAll, deleteOne, editOne, createCategory } = require("../controllers/categories");
 
 const validation = require("../middlewares/validation")
 const { name, description } = require("../schemas/category")
@@ -12,5 +12,6 @@ router.get("/:id", getOne);
 router.put("/:id", validation({ name, description }), editOne);
 
 router.delete("/:id", deleteOne);
+router.post("/", createCategory)
 
 module.exports = router;
