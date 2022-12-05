@@ -15,7 +15,7 @@ router.use("/categories", categoriesRouter);
 router.use("/transactions", transactionsRouter);
 
 router.use("/auth", authRouter);
-router.use("/transactions", transactionsRouter)
+
 
 
 module.exports = router;
