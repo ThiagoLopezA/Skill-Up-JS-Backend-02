@@ -26,7 +26,7 @@ exports.getOne = async (id) => {
 
 exports.createOne = async (props) => {
   try {
-    if (!props.userId || !props.amount || !props.date || !props.categoryId) {
+    if (!props.userId || !props.categoryId) {
       throw new ErrorObject("Incomplete data", 400);
     }
     const newTransaction = await Transaction.create({
