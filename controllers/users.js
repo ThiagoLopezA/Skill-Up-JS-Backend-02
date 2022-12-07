@@ -51,10 +51,11 @@ module.exports = {
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getUser(req.params.id);
+      const encrypted = jwt.encode(response, "1m");
       endpointResponse({
         res,
         message: "User retrieved successfully",
-        body: response,
+        body: encrypted,
       });
     } catch (error) {
       const httpError = createHttpError(
