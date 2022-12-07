@@ -56,3 +56,11 @@ module.exports.createUser = async (user) => {
   }
 };
 
+exports.findUser = async (user) => {
+  try {
+    const find = await User.findOne({ where: user });
+    return find;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
