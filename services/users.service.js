@@ -30,3 +30,12 @@ exports.getByEmail = async email => {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
 };
+
+exports.findAll = async () => {
+  try {
+    const users = await User.findAll();
+    return users;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
