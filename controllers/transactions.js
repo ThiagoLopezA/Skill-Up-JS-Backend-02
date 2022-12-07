@@ -1,7 +1,13 @@
 const createHttpError = require("http-errors");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { getOne, deleteOne,createOne, getAllUserTransactions } = require("../services/transactions.service");
+const {
+  getOne,
+  deleteOne,
+  createOne,
+  getAllUserTransactions,
+  editTransaction,
+} = require("../services/transactions.service");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
@@ -16,7 +22,7 @@ module.exports = {
       const httpError = createHttpError(
         error.statusCode,
         `[Error retrieving transaction] - [/:id - GET]: ${error.message}`
-        );
+      );
       next(httpError);
     }
   }),
@@ -38,7 +44,7 @@ module.exports = {
     }
   }),
 
-    createOne: catchAsync(async (req, res, next) => {
+  createOne: catchAsync(async (req, res, next) => {
     try {
       const response = await createOne(req.body);
       endpointResponse({
@@ -62,8 +68,6 @@ module.exports = {
         message: "All available transactions obtained successfully",
         body: response,
       });
-      
-
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
@@ -71,6 +75,21 @@ module.exports = {
       );
       next(httpError);
     }
-
-})
+  }),
+  editOne: catchAsync(async (req, res, next) => {
+    try {
+      const response = await editTransaction(req.params.id, req.body);
+      endpointResponse({
+        res,
+        message: "Update transaction successfully",
+        body: response,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error updating transaction] - [/:id - PUT]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
 };
