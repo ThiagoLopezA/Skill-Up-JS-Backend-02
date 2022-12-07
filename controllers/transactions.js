@@ -6,6 +6,7 @@ const {
   deleteOne,
   createOne,
   getAllUserTransactions,
+  editTransaction,
 } = require("../services/transactions.service");
 const jwt = require("../helpers/jwt.helper");
 
@@ -75,6 +76,24 @@ module.exports = {
       const httpError = createHttpError(
         error.statusCode,
         `[Error to get transaction] - [GET]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
+
+  editOne: catchAsync(async (req, res, next) => {
+    try {
+      const response = await editTransaction(req.params.id, req.body);
+      const encrypted = jwt.encode(response.dataValues, "1m");
+      endpointResponse({
+        res,
+        message: "Update transaction successfully",
+        body: { encrypted },
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error updating transaction] - [/:id - PUT]: ${error.message}`
       );
       next(httpError);
     }
