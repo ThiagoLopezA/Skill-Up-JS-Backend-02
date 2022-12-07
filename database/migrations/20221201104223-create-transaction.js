@@ -10,10 +10,12 @@ module.exports = {
       },
       description: {
         type: Sequelize.STRING,
+        allowNull: true,
+        type: Sequelize.STRING
       },
       amount: {
         allowNull: false,
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10,2),
       },
       date: {
         allowNull: false,
