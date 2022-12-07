@@ -33,12 +33,10 @@ module.exports = {
   deleteOne: catchAsync(async (req, res, next) => {
     try {
       const id = req.params.id;
-      const response = await deleteOne(id);
-      const encrypted = jwt.encode(response, "1m");
+      await deleteOne(id);
       endpointResponse({
         res,
         message: "User deleted successfully",
-        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
