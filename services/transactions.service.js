@@ -41,7 +41,6 @@ exports.createOne = async (props) => {
   }
 };
 
-
 exports.getAllUserTransactions = async (props) => {
   try {
     const allTransactions = await Transaction.findAll(
@@ -50,6 +49,27 @@ exports.getAllUserTransactions = async (props) => {
     );
 
     return allTransactions;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
+
+module.exports.editTransaction = async (id, props) => {
+  try {
+    const transaction = await Transaction.findOne(
+      { where: { id: id } },
+      { include: User }
+    );
+    if (!transaction) {
+      throw new ErrorObject("Transaction not found", 404);
+    }
+    transaction.categoryId = props.category;
+    transaction.userId = props.user;
+    transaction.amount = props.amount
+    transaction.date = props.date
+
+    await Transaction.update(transaction, { where: { id } });
+    return transaction
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
