@@ -31,10 +31,11 @@ module.exports = {
     try {
       const id = req.params.id;
       const response = await deleteOne(id);
+      const encrypted = jwt.encode(response, "1m");
       endpointResponse({
         res,
         message: "Transaction deleted successfully",
-        body: response,
+        body: encrypted,
       });
     } catch (error) {
       const httpError = createHttpError(
