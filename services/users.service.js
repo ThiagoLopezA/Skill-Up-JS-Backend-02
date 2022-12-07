@@ -1,7 +1,7 @@
 const { ErrorObject } = require("../helpers/error");
 const { User } = require("../database/models");
 
-exports.getUser = async (id) => {
+exports.getUser = async id => {
   try {
     const user = await User.findByPk(id);
     if (!user) throw new ErrorObject("User not found", 404);
@@ -11,14 +11,11 @@ exports.getUser = async (id) => {
   }
 };
 
-module.exports.deleteOne = async (id) => {
+module.exports.deleteOne = async id => {
   try {
-    const find = await User.findByPk(id);
-    if (find !== null) {
-      const destroy = await User.destroy({ where: { id } });
-      return find;
-    }
-    throw new ErrorObject('user not found', 404);
+    const user = await User.findByPk(id);
+    if (!user) throw new ErrorObject("User not found", 404);
+    await User.destroy({ where: { id } });
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
