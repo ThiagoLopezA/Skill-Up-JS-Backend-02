@@ -17,7 +17,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "Transaction retrieved successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -35,7 +35,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "Transaction deleted successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -53,7 +53,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "Transaction created successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -71,7 +71,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "All available transactions obtained successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(

@@ -16,11 +16,11 @@ module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
       const response = await findAll();
-      const encrypted = jwt.encode(response, "1m");
+      const encrypted = jwt.encode({ users: response }, "1m");
       endpointResponse({
         res,
         message: "Users retrieved successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -38,7 +38,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "User deleted successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -55,7 +55,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "User retrieved successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -75,7 +75,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "User update successfully",
-        body: encrypted,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
