@@ -1,22 +1,29 @@
 const createHttpError = require("http-errors");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { getOne, deleteOne,createOne, getAllUserTransactions } = require("../services/transactions.service");
+const {
+  getOne,
+  deleteOne,
+  createOne,
+  getAllUserTransactions,
+} = require("../services/transactions.service");
+const jwt = require("../helpers/jwt.helper");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getOne(req.params.id);
+      const encrypted = jwt.encode(response, "1m");
       endpointResponse({
         res,
         message: "Transaction retrieved successfully",
-        body: response,
+        body: encrypted,
       });
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
         `[Error retrieving transaction] - [/:id - GET]: ${error.message}`
-        );
+      );
       next(httpError);
     }
   }),
@@ -38,7 +45,7 @@ module.exports = {
     }
   }),
 
-    createOne: catchAsync(async (req, res, next) => {
+  createOne: catchAsync(async (req, res, next) => {
     try {
       const response = await createOne(req.body);
       endpointResponse({
@@ -62,8 +69,6 @@ module.exports = {
         message: "All available transactions obtained successfully",
         body: response,
       });
-      
-
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
@@ -71,6 +76,5 @@ module.exports = {
       );
       next(httpError);
     }
-
-})
+  }),
 };
