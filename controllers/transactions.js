@@ -13,7 +13,7 @@ module.exports = {
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getOne(req.params.id);
-      const encrypted = jwt.encode(response, "1m");
+      const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "Transaction retrieved successfully",
@@ -30,12 +30,10 @@ module.exports = {
   deleteOne: catchAsync(async (req, res, next) => {
     try {
       const id = req.params.id;
-      const response = await deleteOne(id);
-      const encrypted = jwt.encode(response, "1m");
+      await deleteOne(id);
       endpointResponse({
         res,
         message: "Transaction deleted successfully",
-        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -67,7 +65,7 @@ module.exports = {
   getAllUserTransactions: catchAsync(async (req, res, next) => {
     try {
       const response = await getAllUserTransactions(req.body);
-      const encrypted = jwt.encode(response, "1m");
+      const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "All available transactions obtained successfully",
