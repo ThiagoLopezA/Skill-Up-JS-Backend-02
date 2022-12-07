@@ -68,12 +68,10 @@ module.exports = {
     try {
       const id = req.params.id;
       const userData = req.body;
-      const response = await editUser(id, userData);
-      const encrypted = jwt.encode(response, "1m");
+      await editUser(id, userData);
       endpointResponse({
         res,
         message: "User update successfully",
-        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
