@@ -42,13 +42,9 @@ exports.createOne = async (props) => {
 };
 
 
-exports.getAllUserTransactions = async (props) => {
+exports.getAllTransactions = async () => {
   try {
-    const allTransactions = await Transaction.findAll(
-      { where: { userId: props.userId } },
-      { include: User }
-    );
-
+    const allTransactions = await Transaction.findAll();
     return allTransactions;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
