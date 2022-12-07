@@ -49,10 +49,11 @@ module.exports = {
   createOne: catchAsync(async (req, res, next) => {
     try {
       const response = await createOne(req.body);
+      const encrypted = jwt.encode(response, "1m");
       endpointResponse({
         res,
         message: "Transaction created successfully",
-        body: response,
+        body: encrypted,
       });
     } catch (error) {
       const httpError = createHttpError(
