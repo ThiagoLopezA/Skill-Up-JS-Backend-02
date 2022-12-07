@@ -8,15 +8,17 @@ const {
   getAllUserTransactions,
   editTransaction,
 } = require("../services/transactions.service");
+const jwt = require("../helpers/jwt.helper");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getOne(req.params.id);
+      const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "Transaction retrieved successfully",
-        body: response,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -29,11 +31,10 @@ module.exports = {
   deleteOne: catchAsync(async (req, res, next) => {
     try {
       const id = req.params.id;
-      const response = await deleteOne(id);
+      await deleteOne(id);
       endpointResponse({
         res,
         message: "Transaction deleted successfully",
-        body: response,
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -47,10 +48,11 @@ module.exports = {
   createOne: catchAsync(async (req, res, next) => {
     try {
       const response = await createOne(req.body);
+      const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "Transaction created successfully",
-        body: response,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -60,13 +62,15 @@ module.exports = {
       next(httpError);
     }
   }),
+
   getAllUserTransactions: catchAsync(async (req, res, next) => {
     try {
       const response = await getAllUserTransactions(req.body);
+      const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "All available transactions obtained successfully",
-        body: response,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -76,13 +80,15 @@ module.exports = {
       next(httpError);
     }
   }),
+
   editOne: catchAsync(async (req, res, next) => {
     try {
       const response = await editTransaction(req.params.id, req.body);
+      const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "Update transaction successfully",
-        body: response,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(

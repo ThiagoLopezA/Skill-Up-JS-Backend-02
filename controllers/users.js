@@ -1,21 +1,26 @@
 const createHttpError = require("http-errors");
-const { User } = require("../database/models");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { getUser, deleteOne, editUser, createUser } = require("../services/users.service");
+const {
+  getUser,
+  deleteOne,
+  editUser,
+  createUser,
+  findAll,
+} = require("../services/users.service");
 const bcrypt = require("../helpers/bcrypt.helper");
-
-
+const jwt = require("../helpers/jwt.helper");
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
-      const response = await User.findAll();
+      const response = await findAll();
+      const encrypted = jwt.encode({ users: response }, "1m");
       endpointResponse({
         res,
         message: "Users retrieved successfully",
-        body: response,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -28,11 +33,10 @@ module.exports = {
   deleteOne: catchAsync(async (req, res, next) => {
     try {
       const id = req.params.id;
-      const response = await deleteOne(id);
+      await deleteOne(id);
       endpointResponse({
         res,
         message: "User deleted successfully",
-        body: response,
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -45,10 +49,11 @@ module.exports = {
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getUser(req.params.id);
+      const encrypted = jwt.encode(response, "1m");
       endpointResponse({
         res,
         message: "User retrieved successfully",
-        body: response,
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -61,18 +66,18 @@ module.exports = {
 
   editUser: catchAsync(async (req, res, next) => {
     try {
-      const id = req.params.id
-      const userData = req.body
-      const response = await editUser(id, userData);
+      const id = req.params.id;
+      const userData = req.body;
+      await editUser(id, userData);
       endpointResponse({
         res,
-        message: "User update successfully", body: response,
+        message: "User update successfully",
       });
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-          `[Error updating user] - [/:id - PUT]: ${error.message}`
-                );
+        `[Error updating user] - [/:id - PUT]: ${error.message}`
+      );
       next(httpError);
     }
   }),
@@ -80,20 +85,20 @@ module.exports = {
   create: catchAsync(async (req, res, next) => {
     try {
       const user = req.body;
-      user.password = await bcrypt.hash(req.body.password)
+      user.password = await bcrypt.hash(req.body.password);
       const response = await createUser(user);
+      const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "User created successfully",
-         });
+        body: { encrypted },
+      });
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
-          `[Error creating user] - [POST]: ${error.message}`
-           );
+        `[Error creating user] - [POST]: ${error.message}`
+      );
       next(httpError);
     }
-  })
-
-
+  }),
 };

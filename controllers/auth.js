@@ -1,7 +1,7 @@
 const createHttpError = require("http-errors");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { getByEmail } = require("../services/user.service");
+const { getByEmail } = require("../services/users.service");
 const bcrypt = require("../helpers/bcrypt.helper");
 const jwt = require("../helpers/jwt.helper");
 
