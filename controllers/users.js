@@ -91,9 +91,11 @@ module.exports = {
       const user = req.body;
       user.password = await bcrypt.hash(req.body.password);
       const response = await createUser(user);
+      const encrypted = jwt.encode(response, "1m");
       endpointResponse({
         res,
         message: "User created successfully",
+        body: encrypted,
       });
     } catch (error) {
       const httpError = createHttpError(
