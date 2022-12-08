@@ -1,13 +1,13 @@
 module.exports = {
   user: {
-    isAlpha: true,
+    isNumeric: true,
     exists: true,
     notEmpty: true,
     trim: true,
     escape: true,
   },
   category: {
-    isAlpha: true,
+    isNumeric: true,
     exists: true,
     notEmpty: true,
     trim: true,
