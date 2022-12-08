@@ -40,7 +40,8 @@ exports.createOne = async props => {
 
 exports.getAllUserTransactions = async () => {
   try {
-    const allTransactions = await Transaction.findAll();
+    const allTransactions = await Transaction.findAll({raw: true});
+
     return allTransactions;
   }
   catch (error) {
