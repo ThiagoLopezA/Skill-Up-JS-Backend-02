@@ -19,8 +19,7 @@ describe("GET /users/:id", () => {
       .get("/users/101")
       .set("Accept", "application/json")
       .expect("Content-Type", "text/html; charset=utf-8")
-      .expect(404)
-      .end(done);
+      .expect(404, done);
   });
 });
 
@@ -34,6 +33,22 @@ describe("POST /users", (done) => {
     };
     request(app)
       .post("/users")
+      .send(data)
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .end(done);
+  });
+});
+
+describe("POST /auth", (done) => {
+  it("respond with `Authenticated successfully`", (done) => {
+    const data = {
+      email: "edna@mail.com",
+      password: "Hola1234",
+    };
+    request(app)
+      .post("/auth/login")
       .send(data)
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
