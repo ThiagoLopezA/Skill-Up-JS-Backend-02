@@ -38,7 +38,7 @@ exports.createOne = async props => {
   }
 };
 
-exports.getAllUserTransactions = async props => {
+exports.getAllUserTransactions = async () => {
   try {
     const allTransactions = await Transaction.findAll();
     return allTransactions;
