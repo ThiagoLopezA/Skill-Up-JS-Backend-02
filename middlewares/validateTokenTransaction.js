@@ -3,7 +3,7 @@ const jwt = require("../helpers/jwt.helper");
 
 const accesTransaction = async (req, res, next) => {
   const { encrypted } = req.body;
-  const verifyTransaction = jwt.decode(encrypted);
+  const verifyTransaction = jwt.verify(encrypted);
 
   if (!verifyTransaction) throw new ErrorObject("Acces denied", 403);
   next();
