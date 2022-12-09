@@ -1,12 +1,20 @@
 const { ErrorObject } = require("../helpers/error");
 const jwt = require("../helpers/jwt.helper");
+const { catchAsync } = require("../helpers/catchAsync");
+const {Transaction} = require("../database/models")
 
-const accesTransaction = async (req, res, next) => {
-  const { encrypted } = req.body;
-  const verifyTransaction = jwt.verify(encrypted);
+const accessTransaction = catchAsync(async (req, res, next) => {
+  const token = req.headers["authorization"].split(" ")[1];
+  const verified = jwt.verify(token)
+  const id = req.params
+  const findTransaction = await Transaction.findOne({where:{id}});
 
-  if (!verifyTransaction) throw new ErrorObject("Acces denied", 403);
-  next();
-};
+  try {
+     if (!verified || !findTransaction ) throw new ErrorObject("Access denied", 403);
+    next();
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+});
 
-module.exports = { accesTransaction };
+module.exports = { accessTransaction };
