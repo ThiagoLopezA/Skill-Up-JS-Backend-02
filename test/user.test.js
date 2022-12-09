@@ -88,7 +88,7 @@ describe("PUT /users/:id", (done) => {
   it("respond with `User update successfully`", (done) => {
     const userId = 1;
     const data = {
-      first_name: "Marjorie",
+      firstName: "Marjorie",
     };
     chai
       .request(app)
