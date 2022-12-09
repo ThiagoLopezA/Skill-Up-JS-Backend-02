@@ -42,6 +42,14 @@ exports.editUser = async (id, props) => {
   }
 };
 
+exports.findUser = async (user) => {
+  try {
+    const find = await User.findOne({ where: user });
+    return find;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
 exports.findAll = async () => {
   try {
     const users = await User.findAll({ raw: true });
