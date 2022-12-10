@@ -79,3 +79,24 @@ describe(`PUT ${PATH}/:id`, () => {
       });
   });
 });
+
+describe(`DELETE ${PATH}/:id`, () => {
+  it("should delete the incomes category", done => {
+    chai
+      .request(app)
+      .delete(`${PATH}/1`)
+      .end((err, res) => {
+        res.should.have.status(200);
+        done();
+      });
+  });
+  it("shouldn't delete the category because it doesn't exists", done => {
+    chai
+      .request(app)
+      .delete(`${PATH}/15`)
+      .end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+  });
+});
