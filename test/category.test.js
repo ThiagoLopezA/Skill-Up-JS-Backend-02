@@ -100,3 +100,35 @@ describe(`DELETE ${PATH}/:id`, () => {
       });
   });
 });
+
+describe(`POST ${PATH}`, () => {
+  it("should create a category", done => {
+    const data = {
+      name: "Entertainment",
+      description: "All kind of entertainment charges",
+    };
+    chai
+      .request(app)
+      .post(`${PATH}`)
+      .send(data)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.have.header("content-type", /json/);
+        done();
+      });
+  });
+  it("shouldm't create a category (incomplete values)", done => {
+    const data = {
+      name: "Entertainment",
+    };
+    chai
+      .request(app)
+      .post(`${PATH}`)
+      .send(data)
+      .end((err, res) => {
+        res.should.have.status(422);
+        res.should.have.header("content-type", /html/);
+        done();
+      });
+  });
+});
