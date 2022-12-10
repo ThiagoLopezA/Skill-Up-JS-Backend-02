@@ -9,8 +9,8 @@ const { expect } = require("chai");
 chai.should();
 chai.use(chaiHttp);
 
-describe(`GET ${PATH}`, done => {
-  it("respond with json containing an array of 2 categories", done => {
+describe(`GET ${PATH}`, () => {
+  it("should get an array of categories", done => {
     chai
       .request(app)
       .get(`${PATH}`)
@@ -23,8 +23,8 @@ describe(`GET ${PATH}`, done => {
   });
 });
 
-describe(`GET ${PATH}/:id`, done => {
-  it("respond with json containing the income category", done => {
+describe(`GET ${PATH}/:id`, () => {
+  it("should get the income category", done => {
     chai
       .request(app)
       .get(`${PATH}/1`)
@@ -36,13 +36,45 @@ describe(`GET ${PATH}/:id`, done => {
       });
   });
 
-  it("responds with Error 'Category not found' when the category doesn't exist", done => {
+  it("should respond with a 'Category not found' error when the category doesn't exist", done => {
     chai
       .request(app)
       .get(`${PATH}/15`)
       .end((err, res) => {
         res.should.have.status(404);
         res.should.have.header("content-type", "text/html; charset=utf-8");
+        done();
+      });
+  });
+});
+
+describe(`PUT ${PATH}/:id`, () => {
+  it("should update the income category", done => {
+    const data = {
+      name: "EditedIncome",
+      description: "This is an edited Income category",
+    };
+    chai
+      .request(app)
+      .put(`${PATH}/1`)
+      .send(data)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.have.header("content-type", /json/);
+        done();
+      });
+  });
+  it("shouldn't update the income category because it doesn't exists", done => {
+    const data = {
+      name: "EditedIncome",
+      description: "This is an edited Income category",
+    };
+    chai
+      .request(app)
+      .put(`${PATH}/-1`)
+      .send(data)
+      .end((err, res) => {
+        res.should.have.status(404);
         done();
       });
   });
