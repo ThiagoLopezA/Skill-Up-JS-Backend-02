@@ -7,8 +7,11 @@ const {
   createOne,
   getAllUserTransactions,
   editTransaction,
+  getBalance,
 } = require("../services/transactions.service");
+const UserService = require("../services/user.service");
 const jwt = require("../helpers/jwt.helper");
+const ErrorObject = require("../helpers/errorObject");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
@@ -48,6 +51,13 @@ module.exports = {
 
   createOne: catchAsync(async (req, res, next) => {
     try {
+      const { userId } = req.body;
+      const user = await UserService.getOne(userId);
+      if (!user) throw new ErrorObject("Category not found", 404);
+      const balance = await getBalance(userId);
+      if (balance < req.body.amount) {
+        throw new ErrorObject("Insufficient balance", 400);
+      }
       const response = await createOne(req.body);
       const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({

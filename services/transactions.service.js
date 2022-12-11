@@ -40,16 +40,15 @@ exports.createOne = async props => {
 
 exports.getAllUserTransactions = async () => {
   try {
-    const allTransactions = await Transaction.findAll({raw: true});
+    const allTransactions = await Transaction.findAll({ raw: true });
 
     return allTransactions;
-  }
-  catch (error) {
+  } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }
 };
 
-module.exports.editTransaction = async (id, props) => {
+exports.editTransaction = async (id, props) => {
   try {
     const transaction = await Transaction.findOne(
       { where: { id: id } },
@@ -60,11 +59,41 @@ module.exports.editTransaction = async (id, props) => {
     }
     transaction.categoryId = props.category;
     transaction.userId = props.user;
-    transaction.amount = props.amount
-    transaction.date = props.date
+    transaction.amount = props.amount;
+    transaction.date = props.date;
 
     await Transaction.update(transaction, { where: { id } });
-    return transaction
+    return transaction;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
+
+exports.getBalance = async userId => {
+  try {
+    const transactionsToUser = await Transaction.findAll({
+      where: { toUserId: userId },
+      raw: true,
+    });
+    const transactionsFromUser = await Transaction.findAll({
+      where: { userId },
+      raw: true,
+    });
+    const loads = await Transaction.findAll({
+      where: { toUserId: userId, userId: userId },
+      raw: true,
+    });
+    let balance = 0;
+    transactionsFromUser.forEach(transaction => {
+      balance -= transaction.amount;
+    });
+    transactionsToUser.forEach(transaction => {
+      balance += transaction.amount;
+    });
+    loads.forEach(transaction => {
+      balance += transaction.amount;
+    });
+    return balance;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }

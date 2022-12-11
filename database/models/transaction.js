@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       description: { type: DataTypes.STRING, allowNull: true },
       amount: { type: DataTypes.DECIMAL, allowNull: false },
-      date: { type: DataTypes.DATE, allowNull: false },
+      date: { type: DataTypes.DATE },
       userId: DataTypes.INTEGER,
       toUserId: DataTypes.INTEGER,
       categoryId: DataTypes.INTEGER,
