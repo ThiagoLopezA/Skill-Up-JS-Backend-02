@@ -37,6 +37,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "User deleted successfully",
+        code: 202,
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -72,6 +73,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "User update successfully",
+        code: 202,
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -92,6 +94,7 @@ module.exports = {
         res,
         message: "User created successfully",
         body: { encrypted },
+        code: 201,
       });
     } catch (error) {
       const httpError = createHttpError(
