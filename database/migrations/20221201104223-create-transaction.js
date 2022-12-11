@@ -10,17 +10,22 @@ module.exports = {
       },
       description: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       amount: {
         allowNull: false,
-        type: Sequelize.DECIMAL(10,2),
+        type: Sequelize.DECIMAL(10, 2),
       },
       date: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       userId: {
+        type: Sequelize.INTEGER,
+        references: { model: "users", key: "id" },
+      },
+      toUserId: {
         type: Sequelize.INTEGER,
         references: { model: "users", key: "id" },
       },
@@ -30,6 +35,7 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
+        defaultValue: Sequelize.NOW,
         type: Sequelize.DATE,
       },
       deletedAt: {
@@ -37,6 +43,7 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        defaultValue: Sequelize.NOW,
         type: Sequelize.DATE,
       },
     });
