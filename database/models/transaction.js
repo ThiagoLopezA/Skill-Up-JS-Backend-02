@@ -28,14 +28,12 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
       toUserId: DataTypes.INTEGER,
       categoryId: DataTypes.INTEGER,
-      deletedAt: {
-        type: DataTypes.STRING,
-      },
     },
     {
       sequelize,
       timestamps: true,
       modelName: "Transaction",
+      paranoid: true,
     }
   );
   return Transaction;
