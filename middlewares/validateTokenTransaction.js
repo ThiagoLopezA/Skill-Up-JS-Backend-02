@@ -9,12 +9,9 @@ const accessTransaction = catchAsync(async (req, res, next) => {
   const id = req.params
   const findTransaction = await Transaction.findOne({where:{id}});
 
-  try {
      if (!verified || !findTransaction ) throw new ErrorObject("Access denied", 403);
     next();
-  } catch (error) {
-    throw new ErrorObject(error.message, error.statusCode || 500);
-  }
+ 
 });
 
 module.exports = { accessTransaction };
