@@ -1,7 +1,13 @@
 const createHttpError = require("http-errors");
 const { endpointResponse } = require("../helpers/success");
 const { catchAsync } = require("../helpers/catchAsync");
-const { getOne, getAll, deleteOne, editOne, createOne } = require("../services/categories.service");
+const {
+  getOne,
+  getAll,
+  deleteOne,
+  editOne,
+  createOne,
+} = require("../services/categories.service");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
@@ -28,6 +34,7 @@ module.exports = {
         res,
         message: "Category deleted successfully",
         body: response,
+        code: 202,
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -62,12 +69,13 @@ module.exports = {
         res,
         message: "Category edited successfully",
         body: response,
+        code: 202,
       });
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
         `[Error editing category] - [/:id - PUT]: ${error.message}`
-        );
+      );
       next(httpError);
     }
   }),
@@ -78,6 +86,7 @@ module.exports = {
         res,
         message: "Category created successfully",
         body: response,
+        code: 201,
       });
     } catch (error) {
       const httpError = createHttpError(

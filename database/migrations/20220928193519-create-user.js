@@ -29,15 +29,17 @@ module.exports = {
       roleId: {
         type: Sequelize.INTEGER,
       },
-      deletedAt:{
-        type: Sequelize.STRING
+      deletedAt: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
+        defaultValue: Sequelize.fn("now"),
         type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
+        defaultValue: Sequelize.fn("now"),
         type: Sequelize.DATE,
       },
       deletedAt: {

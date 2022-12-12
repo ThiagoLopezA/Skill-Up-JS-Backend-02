@@ -12,6 +12,7 @@ module.exports = {
       const user = await getByEmail(email);
       const match = await bcrypt.compare(password, user.password);
       if (!match) endpointResponse({ res, body: { ok: false } });
+      delete user.dataValues.password;
       const response = jwt.encode(user.dataValues, "30m");
       endpointResponse({
         res,

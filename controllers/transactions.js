@@ -7,8 +7,11 @@ const {
   createOne,
   getAllUserTransactions,
   editTransaction,
+  getBalance,
 } = require("../services/transactions.service");
+const UserService = require("../services/user.service");
 const jwt = require("../helpers/jwt.helper");
+const ErrorObject = require("../helpers/errorObject");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
@@ -35,6 +38,7 @@ module.exports = {
       endpointResponse({
         res,
         message: "Transaction deleted successfully",
+        code: 202,
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -47,12 +51,20 @@ module.exports = {
 
   createOne: catchAsync(async (req, res, next) => {
     try {
+      const { userId } = req.body;
+      const user = await UserService.getOne(userId);
+      if (!user) throw new ErrorObject("Category not found", 404);
+      const balance = await getBalance(userId);
+      if (balance < req.body.amount) {
+        throw new ErrorObject("Insufficient balance", 400);
+      }
       const response = await createOne(req.body);
       const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
         message: "Transaction created successfully",
         body: { encrypted },
+        code: 201,
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -66,11 +78,11 @@ module.exports = {
   getAllUserTransactions: catchAsync(async (req, res, next) => {
     try {
       const response = await getAllUserTransactions(req.body);
-      const encrypted = jwt.encode({response}, "1m");
+      const encrypted = jwt.encode({ response }, "1m");
       endpointResponse({
         res,
         message: "All available transactions obtained successfully",
-        body: {encrypted },
+        body: { encrypted },
       });
     } catch (error) {
       const httpError = createHttpError(
@@ -89,6 +101,7 @@ module.exports = {
         res,
         message: "Update transaction successfully",
         body: { encrypted },
+        code: 202,
       });
     } catch (error) {
       const httpError = createHttpError(

@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Transaction extends Model {
     /**
@@ -11,24 +9,32 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Transaction.belongsTo(models.User, { foreignKey: 'userId'})
-      Transaction.belongsTo(models.Category, { foreignKey: 'categoryId'})
+      Transaction.belongsTo(models.User, { foreignKey: "userId" });
+      Transaction.belongsTo(models.Category, { foreignKey: "categoryId" });
+      Transaction.belongsTo(models.User, { foreignKey: "toUserId" });
     }
-  };
-  Transaction.init({
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
-    description: {type: DataTypes.STRING, allowNull: true },
-    amount: {type: DataTypes.DECIMAL, allowNull: false},
-    date: {type: DataTypes.DATE, allowNull: false},
-    userId: DataTypes.INTEGER,
-    categoryId: DataTypes.INTEGER,
-    deletedAt: {
-        type: DataTypes.STRING
+  }
+  Transaction.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
-  }, {
-    sequelize, 
-    timestamps: true,
-    modelName: 'Transaction',
-  });
+      description: { type: DataTypes.STRING, allowNull: true },
+      amount: { type: DataTypes.DECIMAL, allowNull: false },
+      date: { type: DataTypes.DATE },
+      userId: DataTypes.INTEGER,
+      toUserId: DataTypes.INTEGER,
+      categoryId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      timestamps: true,
+      modelName: "Transaction",
+      paranoid: true,
+    }
+  );
   return Transaction;
 };
