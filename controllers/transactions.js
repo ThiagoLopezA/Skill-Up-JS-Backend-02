@@ -48,7 +48,6 @@ module.exports = {
       next(httpError);
     }
   }),
-
   createOne: catchAsync(async (req, res, next) => {
     try {
       const { userId } = req.body;
@@ -103,6 +102,16 @@ module.exports = {
         body: { encrypted },
         code: 202,
       });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error updating transaction] - [/:id - PUT]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
+  createLoad: catchAsync(async (req, res, next) => {
+    try {
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
