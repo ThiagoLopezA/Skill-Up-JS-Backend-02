@@ -86,7 +86,6 @@ module.exports = {
       next(httpError);
     }
   }),
-
   getAllUserTransactions: catchAsync(async (req, res, next) => {
     try {
       const response = await getAllUserTransactions(req.body);
@@ -104,7 +103,6 @@ module.exports = {
       next(httpError);
     }
   }),
-
   editOne: catchAsync(async (req, res, next) => {
     try {
       const response = await editTransaction(req.params.id, req.body);
