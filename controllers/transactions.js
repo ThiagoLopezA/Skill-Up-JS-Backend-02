@@ -9,9 +9,10 @@ const {
   editTransaction,
   getBalance,
 } = require("../services/transactions.service");
-const UserService = require("../services/user.service");
+const UserService = require("../services/users.service");
+const CategoryService = require("../services/categories.service");
 const jwt = require("../helpers/jwt.helper");
-const ErrorObject = require("../helpers/errorObject");
+const { ErrorObject } = require("../helpers/error");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
@@ -50,14 +51,26 @@ module.exports = {
   }),
   createOne: catchAsync(async (req, res, next) => {
     try {
-      const { userId } = req.body;
-      const user = await UserService.getOne(userId);
+      let response;
+      const { userId, categoryId } = req.body;
+      const category = await CategoryService.getOne(categoryId);
+      const user = await UserService.getUser(userId);
+      if (!category) throw new ErrorObject("Invalid category", 400);
       if (!user) throw new ErrorObject("Category not found", 404);
-      const balance = await getBalance(userId);
-      if (balance < req.body.amount) {
-        throw new ErrorObject("Insufficient balance", 400);
+
+      if (category.name === "Outcomes") {
+        const balance = await getBalance(userId);
+        if (!req.body.toUserId) throw new ErrorObject("Invalid toUserId", 400);
+        if (balance < req.body.amount) {
+          throw new ErrorObject("Insufficient balance", 400);
+        }
+        response = await createOne(req.body);
       }
-      const response = await createOne(req.body);
+
+      if (category.name === "Incomes") {
+        req.body.toUserId = userId;
+        response = await createOne(req.body);
+      }
       const encrypted = jwt.encode(response.dataValues, "1m");
       endpointResponse({
         res,
@@ -102,16 +115,6 @@ module.exports = {
         body: { encrypted },
         code: 202,
       });
-    } catch (error) {
-      const httpError = createHttpError(
-        error.statusCode,
-        `[Error updating transaction] - [/:id - PUT]: ${error.message}`
-      );
-      next(httpError);
-    }
-  }),
-  createLoad: catchAsync(async (req, res, next) => {
-    try {
     } catch (error) {
       const httpError = createHttpError(
         error.statusCode,
