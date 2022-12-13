@@ -23,14 +23,12 @@ exports.getOne = async id => {
 
 exports.createOne = async props => {
   try {
-    if (!props.userId || !props.categoryId) {
-      throw new ErrorObject("Incomplete data", 400);
-    }
     const newTransaction = await Transaction.create({
       amount: props.amount,
       date: props.date,
       userId: props.userId,
       categoryId: props.categoryId,
+      toUserId: props.toUserId,
     });
     return newTransaction;
   } catch (error) {
@@ -72,26 +70,26 @@ exports.editTransaction = async (id, props) => {
 exports.getBalance = async userId => {
   try {
     const transactionsToUser = await Transaction.findAll({
-      where: { toUserId: userId },
+      where: { toUserId: userId, categoryId: 2 },
       raw: true,
     });
     const transactionsFromUser = await Transaction.findAll({
-      where: { userId },
+      where: { userId, categoryId: 2 },
       raw: true,
     });
     const loads = await Transaction.findAll({
-      where: { toUserId: userId, userId: userId },
+      where: { toUserId: userId, userId: userId, categoryId: 1 },
       raw: true,
     });
     let balance = 0;
     transactionsFromUser.forEach(transaction => {
-      balance -= transaction.amount;
+      balance -= parseInt(transaction.amount);
     });
     transactionsToUser.forEach(transaction => {
-      balance += transaction.amount;
+      balance += parseInt(transaction.amount);
     });
     loads.forEach(transaction => {
-      balance += transaction.amount;
+      balance += parseInt(transaction.amount);
     });
     return balance;
   } catch (error) {

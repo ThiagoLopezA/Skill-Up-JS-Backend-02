@@ -7,6 +7,7 @@ module.exports = {
     escape: true,
   },
   toUserId: {
+    optional: { checkFalsy: true },
     isNumeric: true,
     exists: true,
     notEmpty: true,

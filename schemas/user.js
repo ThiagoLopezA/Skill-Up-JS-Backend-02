@@ -1,12 +1,12 @@
 module.exports = {
-  first_name: {
+  firstName: {
     isAlpha: true,
     exists: true,
     notEmpty: true,
     trim: true,
     escape: true,
   },
-  last_name: {
+  lastName: {
     isAlpha: true,
     exists: true,
     notEmpty: true,

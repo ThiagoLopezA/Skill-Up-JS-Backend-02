@@ -1,7 +1,7 @@
 const { ErrorObject } = require("../helpers/error");
 const { User } = require("../database/models");
 
-exports.getUser = async id => {
+exports.getUser = async (id) => {
   try {
     const user = await User.findByPk(id, { raw: true });
     if (!user) throw new ErrorObject("User not found", 404);
@@ -11,7 +11,7 @@ exports.getUser = async id => {
   }
 };
 
-exports.deleteOne = async id => {
+exports.deleteOne = async (id) => {
   try {
     const user = await User.findByPk(id);
     if (!user) throw new ErrorObject("User not found", 404);
@@ -21,7 +21,7 @@ exports.deleteOne = async id => {
   }
 };
 
-exports.getByEmail = async email => {
+exports.getByEmail = async (email) => {
   try {
     const user = await User.findOne({ where: { email } });
     if (!user) throw new ErrorObject("User not found", 404);
@@ -59,15 +59,13 @@ exports.findAll = async () => {
   }
 };
 
-module.exports.createUser = async user => {
+module.exports.createUser = async (user) => {
   try {
     const email = user.email;
     const find = await User.findOne({ where: { email } });
     if (find) {
       throw new ErrorObject("email is already exists", 400);
     }
-    user.firstName = user.first_name;
-    user.lastName = user.last_name;
     await User.create(user);
     return await User.findOne({ where: { email } });
   } catch (error) {
