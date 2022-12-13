@@ -9,9 +9,9 @@ const {
   editTransaction,
   getBalance,
 } = require("../services/transactions.service");
-const UserService = require("../services/user.service");
+const UserService = require("../services/users.service");
 const jwt = require("../helpers/jwt.helper");
-const ErrorObject = require("../helpers/errorObject");
+const ErrorObject = require("../helpers/error");
 
 module.exports = {
   getOne: catchAsync(async (req, res, next) => {
