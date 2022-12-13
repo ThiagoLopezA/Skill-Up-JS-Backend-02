@@ -24,10 +24,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
-app.use(errorCatcher());
+app.use(errorCatcher);
 
 // error handler
-app.use(errorHandler());
+app.use(errorHandler);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
