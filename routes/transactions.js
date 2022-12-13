@@ -7,16 +7,17 @@ const {
   editOne,
 } = require("../controllers/transactions");
 const validation = require("../middlewares/validation");
-const validateTokenTransaction = require("../middlewares/validateTokenTransaction");
+const authentication = require("../middlewares/authentication");
+const accessTransaction = require("../middlewares/validateTokenTransaction");
 const { ownUser, isAdmin } = require("../middlewares/ownership");
 const transactionSchema = require("../schemas/transaction");
 
 const router = express.Router();
 
-router.get("/:id", ownUser, validateTokenTransaction, getOne);
-router.delete("/:id", ownUser, validateTokenTransaction, deleteOne);
-router.post("/", validation(transactionSchema), ownUser, createOne);
+router.get("/:id", getOne);
+router.delete("/:id", deleteOne);
+router.post("/", validation(transactionSchema), createOne);
 router.get("/", isAdmin, getAllUserTransactions);
-router.put("/:id", validation(transactionSchema), ownUser, editOne);
+router.put("/:id", validation(transactionSchema), editOne);
 
 module.exports = router;

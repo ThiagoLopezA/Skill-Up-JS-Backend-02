@@ -10,11 +10,7 @@ const { firstName, lastName, email, password } = require("../schemas/user");
 const validation = require("../middlewares/validation");
 const authentication = require("../middlewares/authentication");
 const uploadOne = require("../middlewares/uploads");
-const {
-  ownUser,
-  isAdmin,
-  ownTransaction,
-} = require("../middlewares/ownership");
+const { ownUser, isAdmin } = require("../middlewares/ownership");
 const router = express.Router();
 
 router.get("/", authentication, isAdmin, get);
