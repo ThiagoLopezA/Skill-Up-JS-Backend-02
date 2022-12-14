@@ -2,8 +2,7 @@ const request = require("supertest");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const app = require("../app");
-const { expect } = require("chai");
-const { encode, decode } = require("../helpers/jwt.helper");
+const { encode } = require("../helpers/jwt.helper");
 require("dotenv").config();
 
 //Assertion Style
@@ -17,19 +16,20 @@ chai.use(chaiHttp);
 describe("Test for users", () => {
   const token = encode(
     {
+      id: 1,
+      roleId: 1,
       email: "marge@mail.com",
       password: "Hola1234",
     },
-    10
+    "10m"
   );
-
   describe("GET /users/:id", () => {
     it("respond with json containing a user", (done) => {
       const userId = 1;
       chai
         .request(app)
         .get(`/users/${userId}`)
-        .auth(token, { type: "bearer" })
+        .set("authorization", `Bearer ${token}`)
         .end((err, response) => {
           response.should.have.status(200);
           response.should.have.header("content-type", /json/);
@@ -41,7 +41,7 @@ describe("Test for users", () => {
       chai
         .request(app)
         .get("/users/" + 101)
-        .auth(token, { type: "bearer" })
+        .set("authorization", `Bearer ${token}`)
         .end((err, response) => {
           response.should.have.status(404);
           response.should.have.header(
@@ -62,13 +62,15 @@ describe("Test for users", () => {
         firstName: "Edna",
         lastName: "Krabappel",
         email: "edna@mail.com",
-        password: "Hola1234",
         avatar: "edna.jpeg",
-        rolId: 1,
+        password: "Hola1234",
+        roleId: 1,
       };
       chai
         .request(app)
         .post("/users/register")
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
         .send(data)
         .end((err, response) => {
           response.should.have.status(201);
@@ -84,17 +86,16 @@ describe("Test for users", () => {
 
   describe("POST /auth", () => {
     it("respond with `Authenticated successfully`", (done) => {
-      // const token = encode(
-      //   {
-      //     email: data.email,
-      //     password: data.password,
-      //   },
-      //   10
-      // );
+      const data = {
+        email: "marge@mail.com",
+        password: "Hola1234",
+      };
       chai
         .request(app)
         .post("/auth/login")
-        .auth(token, { type: "bearer" })
+        .set("authorization", `Bearer ${token}`)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
         .send(data)
         .end((err, response) => {
           response.should.have.status(200);
@@ -114,17 +115,10 @@ describe("Test for users", () => {
       const data = {
         firstName: "Marjorie",
       };
-      const token = encode(
-        {
-          email: "marge@mail.com",
-          password: "Hola1234",
-        },
-        10
-      );
       chai
         .request(app)
         .put(`/users/${userId}`)
-        .auth(token, { type: "bearer" })
+        .set("authorization", `Bearer ${token}`)
         .send(data)
         .end((err, response) => {
           response.should.have.status(202);
@@ -143,15 +137,19 @@ describe("Test for users", () => {
       const userId = 2;
       const token = encode(
         {
-          email: "apu@mail.com",
+          id: 2,
+          roleId: 1,
+          email: "lisa@mail.com",
           password: "Hola1234",
         },
-        10
+        "10m"
       );
       chai
         .request(app)
         .delete("/users/" + userId)
-        .auth(token, { type: "bearer" })
+        .set("authorization", `Bearer ${token}`)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
         .end((err, response) => {
           response.should.have.status(202);
           response.should.have.header("content-type", /json/);

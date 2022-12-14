@@ -57,8 +57,7 @@ module.exports = {
       const user = await UserService.getUser(userId);
       if (!category) throw new ErrorObject("Invalid category", 400);
       if (!user) throw new ErrorObject("Category not found", 404);
-
-      if (category.name === "Outcomes") {
+      if (category.name === "Outcome") {
         const balance = await getBalance(userId);
         if (!req.body.toUserId) throw new ErrorObject("Invalid toUserId", 400);
         if (balance < req.body.amount) {
@@ -66,8 +65,7 @@ module.exports = {
         }
         response = await createOne(req.body);
       }
-
-      if (category.name === "Incomes") {
+      if (category.name === "Income") {
         req.body.toUserId = userId;
         response = await createOne(req.body);
       }

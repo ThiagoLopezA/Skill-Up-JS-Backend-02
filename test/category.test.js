@@ -51,7 +51,7 @@ describe(`GET ${PATH}/:id`, () => {
 describe(`PUT ${PATH}/:id`, () => {
   it("should update the income category", (done) => {
     const data = {
-      name: "EditedIncome",
+      name: "Income",
       description: "This is an edited Income category",
     };
     chai
