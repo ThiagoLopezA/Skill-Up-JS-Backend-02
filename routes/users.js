@@ -22,6 +22,6 @@ router.post(
   validation({ firstName, lastName, email, password }),
   create
 );
-router.put("/:id", authentication, ownUser, editUser);
+router.put("/:id", authentication, ownUser, uploadOne, editUser);
 
 module.exports = router;

@@ -69,6 +69,7 @@ module.exports = {
     try {
       const id = req.params.id;
       const userData = req.body;
+      userData.avatar = req.file.filename;
       await editUser(id, userData);
       endpointResponse({
         res,
