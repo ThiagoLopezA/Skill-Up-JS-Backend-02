@@ -19,4 +19,4 @@ const authentication = catchAsync(async (req, res, next) => {
   }
 })
 
-module.exports = authentication
+module.exports = authentication;
