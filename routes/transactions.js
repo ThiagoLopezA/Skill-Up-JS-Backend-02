@@ -12,21 +12,22 @@ const accessTransaction = require("../middlewares/validateTokenTransaction");
 const {
   ownUser,
   isAdmin,
+  ownTransaction,
 } = require("../middlewares/ownership");
 const transactionSchema = require("../schemas/transaction");
 
 const router = express.Router();
 
-router.get("/:id", ownUser, accessTransaction, getOne);
-router.delete("/:id", ownUser, accessTransaction, deleteOne);
-router.post(
-  "/",
+router.get("/:id", ownTransaction, accessTransaction, getOne);
+router.delete("/:id", ownTransaction, accessTransaction, deleteOne);
+router.post("/", validation(transactionSchema), authentication, createOne);
+router.get("/", isAdmin, authentication, getAllUserTransactions);
+router.put(
+  "/:id",
   validation(transactionSchema),
-  authentication,
-  ownUser,
-  createOne
+  ownTransaction,
+  accessTransaction,
+  editOne
 );
-router.get("/", isAdmin, getAllUserTransactions);
-router.put("/:id", validation(transactionSchema), ownUser, editOne);
 
 module.exports = router;

@@ -90,7 +90,6 @@ module.exports = {
       const user = req.body;
       user.password = await bcrypt.hash(req.body.password);
       user.avatar = req.file.filename;
-      console.log(user.avatar);
       const response = await createUser(user);
       const encrypted = jwt.encode(response.dataValues, "10m");
       endpointResponse({

@@ -8,9 +8,8 @@ const accessTransaction = catchAsync(async (req, res, next) => {
   if (!auth) throw new ErrorObject("Token do not exist", 404);
   const token = auth.split(" ")[1];
   const verified = jwt.verify(token);
-  const id = req.params;
+  const { id } = req.params;
   const findTransaction = await Transaction.findOne({ where: { id } });
-
   if (!verified || !findTransaction)
     throw new ErrorObject("Access denied", 403);
   return next();

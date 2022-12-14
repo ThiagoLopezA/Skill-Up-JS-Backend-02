@@ -1,7 +1,7 @@
 const { ErrorObject } = require("../helpers/error");
 const { Transaction, User } = require("../database/models");
 
-exports.deleteOne = async id => {
+exports.deleteOne = async (id) => {
   try {
     const transaction = await Transaction.findByPk(id);
     if (!transaction) throw new ErrorObject("Transaction not found", 404);
@@ -11,7 +11,7 @@ exports.deleteOne = async id => {
   }
 };
 
-exports.getOne = async id => {
+exports.getOne = async (id) => {
   try {
     const transaction = await Transaction.findByPk(id);
     if (!transaction) throw new ErrorObject("Transaction not found", 404);
@@ -21,7 +21,7 @@ exports.getOne = async id => {
   }
 };
 
-exports.createOne = async props => {
+exports.createOne = async (props) => {
   try {
     const newTransaction = await Transaction.create({
       amount: props.amount,
@@ -39,7 +39,6 @@ exports.createOne = async props => {
 exports.getAllUserTransactions = async () => {
   try {
     const allTransactions = await Transaction.findAll({ raw: true });
-
     return allTransactions;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
@@ -67,7 +66,7 @@ exports.editTransaction = async (id, props) => {
   }
 };
 
-exports.getBalance = async userId => {
+exports.getBalance = async (userId) => {
   try {
     const transactionsToUser = await Transaction.findAll({
       where: { toUserId: userId, categoryId: 2 },
@@ -82,13 +81,13 @@ exports.getBalance = async userId => {
       raw: true,
     });
     let balance = 0;
-    transactionsFromUser.forEach(transaction => {
+    transactionsFromUser.forEach((transaction) => {
       balance -= parseInt(transaction.amount);
     });
-    transactionsToUser.forEach(transaction => {
+    transactionsToUser.forEach((transaction) => {
       balance += parseInt(transaction.amount);
     });
-    loads.forEach(transaction => {
+    loads.forEach((transaction) => {
       balance += parseInt(transaction.amount);
     });
     return balance;
