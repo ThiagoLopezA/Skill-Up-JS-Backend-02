@@ -29,6 +29,7 @@ exports.createOne = async (props) => {
       userId: props.userId,
       categoryId: props.categoryId,
       toUserId: props.toUserId,
+      description: props.description
     });
     return newTransaction;
   } catch (error) {
