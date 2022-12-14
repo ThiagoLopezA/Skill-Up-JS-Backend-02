@@ -86,9 +86,9 @@ module.exports = {
       next(httpError);
     }
   }),
-  getAllUserTransactions: catchAsync(async (req, res, next) => {
+  getAllTransactions: catchAsync(async (req, res, next) => {
     try {
-      const response = await getAllUserTransactions(req.body);
+      const response = await getAllTransactions(req.body);
       const encrypted = jwt.encode({ response }, "1m");
       endpointResponse({
         res,

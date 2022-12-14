@@ -36,11 +36,22 @@ exports.createOne = async props => {
   }
 };
 
-exports.getAllUserTransactions = async () => {
+exports.getAllTransactions = async () => {
   try {
     const allTransactions = await Transaction.findAll({ raw: true });
-
     return allTransactions;
+  } catch (error) {
+    throw new ErrorObject(error.message, error.statusCode || 500);
+  }
+};
+
+exports.getUserTransactions = async userId => {
+  try {
+    const transactions = await Transaction.findAll({
+      where: { userId: userId },
+      include: [{ model: User, attributes: ["firstName", "lastName"] }],
+    });
+    return transactions;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }

@@ -3,7 +3,7 @@ const {
   getOne,
   deleteOne,
   createOne,
-  getAllUserTransactions,
+  getAllTransactions,
   editOne,
 } = require("../controllers/transactions");
 const validation = require("../middlewares/validation");
@@ -17,7 +17,7 @@ const router = express.Router();
 router.get("/:id", getOne);
 router.delete("/:id", deleteOne);
 router.post("/", validation(transactionSchema), createOne);
-router.get("/", isAdmin, getAllUserTransactions);
+router.get("/", isAdmin, getAllTransactions);
 router.put("/:id", validation(transactionSchema), editOne);
 
 module.exports = router;
