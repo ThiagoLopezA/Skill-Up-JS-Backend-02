@@ -23,14 +23,7 @@ exports.getOne = async (id) => {
 
 exports.createOne = async (props) => {
   try {
-    const newTransaction = await Transaction.create({
-      amount: props.amount,
-      date: props.date,
-      userId: props.userId,
-      categoryId: props.categoryId,
-      toUserId: props.toUserId,
-      description: props.description
-    });
+    const newTransaction = await Transaction.create(props, { raw: true });
     return newTransaction;
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);

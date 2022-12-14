@@ -3,7 +3,7 @@ const { Category } = require("../database/models");
 
 exports.getOne = async (id) => {
   try {
-    const category = await Category.findByPk(id);
+    const category = await Category.findByPk(id, { raw: true });
     if (!category) throw new ErrorObject("Category not found", 404);
     return category;
   } catch (error) {
@@ -37,7 +37,7 @@ exports.editOne = async (id, category) => {
   try {
     const find = await Category.findByPk(id);
     if (find !== null) {
-      const edit = await Category.update( category, { where: { id } });
+      const edit = await Category.update(category, { where: { id } });
       return category;
     }
     throw new ErrorObject("Category not found", 404);
@@ -49,7 +49,6 @@ exports.editOne = async (id, category) => {
 module.exports.createOne = async (category) => {
   try {
     return await Category.create(category);
-
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);
   }

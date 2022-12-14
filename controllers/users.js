@@ -69,7 +69,7 @@ module.exports = {
     try {
       const id = req.params.id;
       const userData = req.body;
-      if (req.file) userData.avatar = req.file.filename;
+      if(req.file) userData.avatar = req.file.filename;
       await editUser(id, userData);
       endpointResponse({
         res,
@@ -89,7 +89,7 @@ module.exports = {
     try {
       const user = req.body;
       user.password = await bcrypt.hash(req.body.password);
-      user.avatar = req.file.filename;
+      if(req.file) user.avatar = req.file.filename;
       const response = await createUser(user);
       const encrypted = jwt.encode(response.dataValues, "10m");
       endpointResponse({
