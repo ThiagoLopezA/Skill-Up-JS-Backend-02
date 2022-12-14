@@ -16,7 +16,7 @@ module.exports = {
   get: catchAsync(async (req, res, next) => {
     try {
       const response = await findAll();
-      const encrypted = jwt.encode({ users: response }, "1m");
+      const encrypted = jwt.encode({ users: response }, "10m");
       endpointResponse({
         res,
         message: "Users retrieved successfully",
@@ -50,7 +50,7 @@ module.exports = {
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getUser(req.params.id);
-      const encrypted = jwt.encode(response, "1m");
+      const encrypted = jwt.encode(response, "10m");
       endpointResponse({
         res,
         message: "User retrieved successfully",
@@ -92,7 +92,7 @@ module.exports = {
       user.avatar = req.file.filename;
       console.log(user.avatar);
       const response = await createUser(user);
-      const encrypted = jwt.encode(response.dataValues, "1m");
+      const encrypted = jwt.encode(response.dataValues, "10m");
       endpointResponse({
         res,
         message: "User created successfully",
