@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      description: { type: DataTypes.STRING, allowNull: true },
+      description: { type: DataTypes.STRING},
       amount: { type: DataTypes.DECIMAL, allowNull: false },
       date: { type: DataTypes.DATE },
       userId: DataTypes.INTEGER,

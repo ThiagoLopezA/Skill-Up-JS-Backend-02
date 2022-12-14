@@ -12,7 +12,6 @@ const authentication = catchAsync(async (req, res, next) => {
     const verified = verify(token);
     const { iat, exp, ...user } = decoded;
     const find = await findUser(user);
-    console.log(find);
     if (!find || !verified) throw new ErrorObject("Invalid token", 403);
     return next();
   } catch (error) {
