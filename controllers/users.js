@@ -8,6 +8,7 @@ const {
   createUser,
   findAll,
 } = require("../services/users.service");
+const TransactionService = require("../services/transactions.service");
 const bcrypt = require("../helpers/bcrypt.helper");
 const jwt = require("../helpers/jwt.helper");
 
@@ -89,7 +90,7 @@ module.exports = {
     try {
       const user = req.body;
       user.password = await bcrypt.hash(req.body.password);
-      user.avatar = req.file.filename;
+      if (req.file) user.avatar = req.file.filename;
       const response = await createUser(user);
       const encrypted = jwt.encode(response.dataValues, "10m");
       endpointResponse({
@@ -97,6 +98,23 @@ module.exports = {
         message: "User created successfully",
         body: { encrypted },
         code: 201,
+      });
+    } catch (error) {
+      const httpError = createHttpError(
+        error.statusCode,
+        `[Error creating user] - [POST]: ${error.message}`
+      );
+      next(httpError);
+    }
+  }),
+  getBalance: catchAsync(async (req, res, next) => {
+    try {
+      const balance = await TransactionService.getBalance(req.params.id);
+      const encrypted = jwt.encode({ balance }, "10m");
+      endpointResponse({
+        res,
+        message: "Balance retrieved succesfully",
+        body: encrypted,
       });
     } catch (error) {
       const httpError = createHttpError(

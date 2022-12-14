@@ -5,6 +5,7 @@ const {
   deleteOne,
   editUser,
   create,
+  getBalance,
 } = require("../controllers/users");
 const { firstName, lastName, email, password } = require("../schemas/user");
 const validation = require("../middlewares/validation");
@@ -23,5 +24,6 @@ router.post(
   create
 );
 router.put("/:id", authentication, ownUser, uploadOne, editUser);
+router.get("/:id/balance", authentication, ownUser, getBalance);
 
 module.exports = router;
