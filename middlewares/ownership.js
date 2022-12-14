@@ -3,12 +3,13 @@ const { ErrorObject } = require("../helpers/error");
 const { catchAsync } = require("../helpers/catchAsync");
 const User = require("../services/users.service");
 const Transaction = require("../services/transactions.service");
+const validateAuth = require("../helpers/validateAuth");
 
 exports.ownUser = catchAsync(async (req, res, next) => {
   try {
-    const token = req.headers["authorization"].split(" ")[1];
-    const decoded = decode(token);
+    const decoded = await validateAuth(req.headers);
     const user = await User.getUser(req.params.id);
+    console.log(decoded.id);
     if (decoded.id === user.id || decoded.roleId === 2) return next();
     throw new ErrorObject("Access denied", 403);
   } catch (error) {
@@ -16,10 +17,17 @@ exports.ownUser = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.isAdmin = catchAsync(async (req, res, next) => {
+  const decoded = await validateAuth(req.headers);
+  console.log(decoded.id);
+  const user = await User.getUser(decoded.id);
+  if (!user.roleId == 2) throw new ErrorObject("Not authorized", 403);
+  return next();
+});
+
 exports.ownTransaction = catchAsync(async (req, res, next) => {
   try {
-    const token = req.headers["authorization"].split(" ")[1];
-    const decoded = decode(token);
+    const decoded = await validateAuth(req.headers);
     const transaction = await Transaction.getOne(req.params.id);
     if (decoded.id === transaction.userId || decoded.roleId === 2)
       return next();
