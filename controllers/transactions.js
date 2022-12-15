@@ -5,7 +5,7 @@ const {
   getOne,
   deleteOne,
   createOne,
-  getAllUserTransactions,
+  getAllTransactions,
   editTransaction,
   getBalance,
 } = require("../services/transactions.service");
