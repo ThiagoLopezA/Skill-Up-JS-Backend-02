@@ -3,7 +3,7 @@ const {
   getOne,
   deleteOne,
   createOne,
-  getAllUserTransactions,
+  getAllTransactions,
   editOne,
 } = require("../controllers/transactions");
 const validation = require("../middlewares/validation");

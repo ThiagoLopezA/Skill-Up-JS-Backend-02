@@ -107,6 +107,24 @@ module.exports = {
       next(httpError);
     }
   }),
+
+  getTransactions: catchAsync(async (req, res, next) => {
+    try {
+      const response = await TranasctionService.getUserTransactions(req.params.id);
+      const encrypted = jwt.encode({ transactions: response }, "1m");
+      endpointResponse({
+        res,
+        message: "User transactions retrieved successfully",
+        body: { encrypted },
+      })
+      } catch(error){
+        const httpError = createHttpError(
+        error.statusCode,
+        `[Error retrieving user transactions] - [/:id/transactions - GET]: ${error.message}`
+        );
+        next(httpError);
+      }
+}),
   getBalance: catchAsync(async (req, res, next) => {
     try {
       const balance = await TransactionService.getBalance(req.params.id);
@@ -117,11 +135,11 @@ module.exports = {
         body: encrypted,
       });
     } catch (error) {
-      const httpError = createHttpError(
+        const httpError = createHttpError(
         error.statusCode,
-        `[Error creating user] - [POST]: ${error.message}`
-      );
-      next(httpError);
+        `[Error retrieving user transactions] - [/:id/balance - GET]: ${error.message}`
+        );
+        next(httpError);
     }
   }),
 };
