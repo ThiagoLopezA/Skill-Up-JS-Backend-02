@@ -70,7 +70,7 @@ module.exports = {
     try {
       const id = req.params.id;
       const userData = req.body;
-      if(req.file) userData.avatar = req.file.filename;
+      if (req.file) userData.avatar = req.file.filename;
       await editUser(id, userData);
       endpointResponse({
         res,
@@ -110,21 +110,23 @@ module.exports = {
 
   getTransactions: catchAsync(async (req, res, next) => {
     try {
-      const response = await TranasctionService.getUserTransactions(req.params.id);
-      const encrypted = jwt.encode({ transactions: response }, "1m");
+      const response = await TransactionService.getUserTransactions(
+        req.params.id
+      );
+      const encrypted = jwt.encode({ transactions: response }, "10m");
       endpointResponse({
         res,
         message: "User transactions retrieved successfully",
         body: { encrypted },
-      })
-      } catch(error){
-        const httpError = createHttpError(
+      });
+    } catch (error) {
+      const httpError = createHttpError(
         error.statusCode,
         `[Error retrieving user transactions] - [/:id/transactions - GET]: ${error.message}`
-        );
-        next(httpError);
-      }
-}),
+      );
+      next(httpError);
+    }
+  }),
   getBalance: catchAsync(async (req, res, next) => {
     try {
       const balance = await TransactionService.getBalance(req.params.id);
@@ -135,11 +137,11 @@ module.exports = {
         body: encrypted,
       });
     } catch (error) {
-        const httpError = createHttpError(
+      const httpError = createHttpError(
         error.statusCode,
         `[Error retrieving user transactions] - [/:id/balance - GET]: ${error.message}`
-        );
-        next(httpError);
+      );
+      next(httpError);
     }
   }),
 };

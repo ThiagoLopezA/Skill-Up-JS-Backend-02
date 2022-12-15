@@ -57,19 +57,21 @@ module.exports = {
       const user = await UserService.getUser(userId);
       if (!category) throw new ErrorObject("Invalid category", 400);
       if (!user) throw new ErrorObject("Category not found", 404);
-      if (category.name === "Outcome") {
+      if (category.name === "Outcomes") {
         const balance = await getBalance(userId);
         if (!req.body.toUserId) throw new ErrorObject("Invalid toUserId", 400);
         if (balance < req.body.amount) {
           throw new ErrorObject("Insufficient balance", 400);
         }
-        response = await createOne(req.body);
+        let transaction = await createOne(req.body);
+        response = await getOne(transaction.id);
       }
-      if (category.name === "Income") {
+      if (category.name === "Incomes") {
         req.body.toUserId = userId;
-        response = await createOne(req.body);
+        let transaction = await createOne(req.body);
+        response = await getOne(transaction.id);
       }
-      const encrypted = jwt.encode(response.dataValues, "10m");
+      const encrypted = jwt.encode({ response }, "10m");
       endpointResponse({
         res,
         message: "Transaction created successfully",
