@@ -31,8 +31,9 @@ exports.ownTransaction = catchAsync(async (req, res, next) => {
   try {
     const decoded = await validateAuth(req.headers);
     const transaction = await Transaction.getOne(req.params.id);
-    if (decoded.id === transaction.userId || decoded.roleId === 2)
+    if (decoded.id === transaction.userId || decoded.roleId === 2) {
       return next();
+    }
     throw new ErrorObject("Access denied", 403);
   } catch (error) {
     throw new ErrorObject(error.message, error.statusCode || 500);

@@ -70,7 +70,7 @@ module.exports = {
     try {
       const id = req.params.id;
       const userData = req.body;
-      if (req.file) userData.avatar = req.file.filename;
+      if(req.file) userData.avatar = req.file.filename;
       await editUser(id, userData);
       endpointResponse({
         res,

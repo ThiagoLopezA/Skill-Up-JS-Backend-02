@@ -22,12 +22,6 @@ router.get("/:id", ownTransaction, accessTransaction, getOne);
 router.delete("/:id", ownTransaction, accessTransaction, deleteOne);
 router.post("/", validation(transactionSchema), authentication, createOne);
 router.get("/", isAdmin, authentication, getAllUserTransactions);
-router.put(
-  "/:id",
-  validation(transactionSchema),
-  ownTransaction,
-  accessTransaction,
-  editOne
-);
+router.put("/:id", ownTransaction, accessTransaction, editOne);
 
 module.exports = router;
