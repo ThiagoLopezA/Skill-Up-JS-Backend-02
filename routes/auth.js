@@ -5,11 +5,6 @@ const authentication = require("../middlewares/authentication");
 const { email, password } = require("../schemas/user");
 const router = express.Router();
 
-router.post(
-  "/login",
-  validation({ email, password }),
-  authentication,
-  login
-);
+router.post("/login", validation({ email, password }), login);
 
 module.exports = router;

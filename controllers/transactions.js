@@ -18,7 +18,7 @@ module.exports = {
   getOne: catchAsync(async (req, res, next) => {
     try {
       const response = await getOne(req.params.id);
-      const encrypted = jwt.encode(response.dataValues, "1m");
+      const encrypted = jwt.encode(response.dataValues, "10m");
       endpointResponse({
         res,
         message: "Transaction retrieved successfully",
@@ -57,8 +57,7 @@ module.exports = {
       const user = await UserService.getUser(userId);
       if (!category) throw new ErrorObject("Invalid category", 400);
       if (!user) throw new ErrorObject("Category not found", 404);
-
-      if (category.name === "Outcomes") {
+      if (category.name === "Outcome") {
         const balance = await getBalance(userId);
         if (!req.body.toUserId) throw new ErrorObject("Invalid toUserId", 400);
         if (balance < req.body.amount) {
@@ -66,12 +65,11 @@ module.exports = {
         }
         response = await createOne(req.body);
       }
-
-      if (category.name === "Incomes") {
+      if (category.name === "Income") {
         req.body.toUserId = userId;
         response = await createOne(req.body);
       }
-      const encrypted = jwt.encode(response.dataValues, "1m");
+      const encrypted = jwt.encode(response.dataValues, "10m");
       endpointResponse({
         res,
         message: "Transaction created successfully",
@@ -89,7 +87,7 @@ module.exports = {
   getAllTransactions: catchAsync(async (req, res, next) => {
     try {
       const response = await getAllTransactions(req.body);
-      const encrypted = jwt.encode({ response }, "1m");
+      const encrypted = jwt.encode({ response }, "10m");
       endpointResponse({
         res,
         message: "All available transactions obtained successfully",
@@ -106,7 +104,7 @@ module.exports = {
   editOne: catchAsync(async (req, res, next) => {
     try {
       const response = await editTransaction(req.params.id, req.body);
-      const encrypted = jwt.encode(response.dataValues, "1m");
+      const encrypted = jwt.encode(response.dataValues, "10m");
       endpointResponse({
         res,
         message: "Update transaction successfully",

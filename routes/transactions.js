@@ -9,15 +9,19 @@ const {
 const validation = require("../middlewares/validation");
 const authentication = require("../middlewares/authentication");
 const accessTransaction = require("../middlewares/validateTokenTransaction");
-const { ownUser, isAdmin } = require("../middlewares/ownership");
+const {
+  ownUser,
+  isAdmin,
+  ownTransaction,
+} = require("../middlewares/ownership");
 const transactionSchema = require("../schemas/transaction");
 
 const router = express.Router();
 
-router.get("/:id", getOne);
-router.delete("/:id", deleteOne);
-router.post("/", validation(transactionSchema), createOne);
-router.get("/", isAdmin, getAllTransactions);
-router.put("/:id", validation(transactionSchema), editOne);
+router.get("/:id", ownTransaction, accessTransaction, getOne);
+router.delete("/:id", ownTransaction, accessTransaction, deleteOne);
+router.post("/", validation(transactionSchema), authentication, createOne);
+router.get("/", isAdmin, authentication, getAllUserTransactions);
+router.put("/:id", ownTransaction, accessTransaction, editOne);
 
 module.exports = router;
